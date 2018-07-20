@@ -78,7 +78,7 @@ Config parse_config( int argc, char* argv[] )
 	cfg.names.cmake_link_target = get_or( result, "l", default_link_name );
 
 
-	for( int i = 0; i < cfg.names.cmake_link_target.size() - 1; ++i ) {
+	for( int i = 0; i < int(cfg.names.cmake_link_target.size() - 1); ++i ) {
 		if( cfg.names.cmake_link_target[i] == ':' && cfg.names.cmake_link_target[i + 1] == ':' ) {
 			cfg.names.component_name = cfg.names.cmake_link_target.substr( i + 2 );
 			break;

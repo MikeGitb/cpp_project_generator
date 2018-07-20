@@ -40,13 +40,14 @@ message("Detected libraries: ${library_list}")
 
 file(GLOB_RECURSE SOURCE_FILES "src/*.cpp")
 if(SOURCE_FILES)
-	add_library( ${$TARGET_NAME$}$_lib	STATIC	${SOURCE_FILES}	)
+	add_library				( ${$TARGET_NAME$}$_lib	STATIC	${SOURCE_FILES}	)
+	target_link_libraries	( ${$TARGET_NAME$}$_lib PUBLIC	${library_list} )
 else()
-	add_library( ${$TARGET_NAME$}$_lib INTERFACE )
+	add_library				( ${$TARGET_NAME$}$_lib INTERFACE )
+	target_link_libraries	( ${$TARGET_NAME$}$_lib INTERFACE	${library_list} )
 endif()
 
 target_include_directories	( ${$TARGET_NAME$}$_lib INTERFACE	src )
-target_link_libraries		( ${$TARGET_NAME$}$_lib PUBLIC		${library_list})
 # add further source files here
 # target_sources(${$TARGET_NAME$}$_lib PUBLIC further_source files)
 

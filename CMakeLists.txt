@@ -54,6 +54,11 @@ else()
 	target_sources(cpp_project_generator_lib PRIVATE src/linux/arch.cpp)
 endif()
 
+if(NOT WIN32)
+	# just a guess that we ar using libstdc++: gcc 8 requires the filesystem library to be linked explicitly
+	target_link_libraries(cpp_project_generator_lib PUBLIC stdc++fs)
+endif()
+
 # create link target (e.g. for testing)
 add_library( MBa::cpp_project_generator_lib ALIAS cpp_project_generator_lib )
 

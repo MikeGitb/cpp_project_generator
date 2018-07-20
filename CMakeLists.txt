@@ -62,6 +62,19 @@ add_library( MBa::cpp_project_generator_lib ALIAS cpp_project_generator_lib )
 add_executable(	cpp_project_generator main.cpp )
 target_link_libraries( cpp_project_generator MBa::cpp_project_generator_lib)
 
+
+########## Installation  #####################################################
+
+add_custom_command(TARGET cpp_project_generator POST_BUILD
+  COMMAND "${CMAKE_COMMAND}" -E copy_directory
+     "${CMAKE_CURRENT_SOURCE_DIR}/templates"
+     "$<TARGET_FILE_DIR:cpp_project_generator>/cpp_project_templates"
+  COMMENT "Copying to output directory")
+
+
+INSTALL( DIRECTORY "$<TARGET_FILE_DIR:cpp_project_generator>/cpp_project_templates" DESTINATION "." )
+INSTALL( TARGETS cpp_project_generator RUNTIME DESTINATION ".")
+
 ########## Testing ###########################################################
 option(cpp_project_generator_INCLUDE_TESTS "Generate targets in test directory" ON)
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(cpp_project_generator  LANGUAGES CXX)
+project(${$PROJECT_NAME$}$  LANGUAGES CXX)
 
 ########## General Settings for the whole project ############################
 set(CMAKE_CXX_STANDARD 17)
@@ -38,35 +38,30 @@ message("Detected libraries: ${library_list}")
 # We put all source files (except main) into a separate library
 # this Library is then linked to the main target -- makes testing simpler
 
-file(GLOB SOURCE_FILES "src/*.cpp")
+file(GLOB_RECURSE SOURCE_FILES "src/*.cpp")
 if(SOURCE_FILES)
-	add_library( cpp_project_generator_lib	STATIC	${SOURCE_FILES}	)
+	add_library( ${$TARGET_NAME$}$_lib	STATIC	${SOURCE_FILES}	)
 else()
-	add_library( cpp_project_generator_lib INTERFACE )
+	add_library( ${$TARGET_NAME$}$_lib INTERFACE )
 endif()
 
-target_include_directories	( cpp_project_generator_lib INTERFACE	src )
-target_link_libraries		( cpp_project_generator_lib PUBLIC		${library_list})
-
-if(MSVC)
-	target_sources(cpp_project_generator_lib PRIVATE src/win/arch.cpp)
-else()
-	target_sources(cpp_project_generator_lib PRIVATE src/linux/arch.cpp)
-endif()
+target_include_directories	( ${$TARGET_NAME$}$_lib INTERFACE	src )
+target_link_libraries		( ${$TARGET_NAME$}$_lib PUBLIC		${library_list})
+# add further source files here
+# target_sources(${$TARGET_NAME$}$_lib PUBLIC further_source files)
 
 # create link target (e.g. for testing)
-add_library( MBa::cpp_project_generator_lib ALIAS cpp_project_generator_lib )
+add_library( ${$CMAKE_TARGET_LINK_NAME$}$ ALIAS ${$TARGET_NAME$}$_lib )
 
 ######### generate the actual Executable
 
-add_executable(	cpp_project_generator main.cpp )
-target_link_libraries( cpp_project_generator MBa::cpp_project_generator_lib)
+add_executable(	${$TARGET_NAME$}$ main.cpp )
+target_link_libraries( ${$TARGET_NAME$}$ ${$CMAKE_TARGET_LINK_NAME$}$)
 
 ########## Testing ###########################################################
-option(cpp_project_generator_INCLUDE_TESTS "Generate targets in test directory" ON)
+option(${$PROJECT_NAME$}$_INCLUDE_TESTS "Generate targets in test directory" ON)
 
-if(cpp_project_generator_INCLUDE_TESTS)
+if(${$PROJECT_NAME$}$_INCLUDE_TESTS)
 	enable_testing()
 	add_subdirectory(tests)
 endif()
-

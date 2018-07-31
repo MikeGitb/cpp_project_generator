@@ -1,5 +1,20 @@
 cmake_minimum_required(VERSION 3.10)
 
+########## General Settings for the whole project ############################
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if (MSVC)
+	# Set warning level (CMAKE adds /W3 and msvc produces a warning, when we would just add /W4 )
+	STRING(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+	add_compile_options(
+		/permissive-
+	)
+else()
+	add_compile_options(-Wall -Wextra)
+endif()
+
 ########## Generate test executable ##########################################
 
 # search for test source files (have to start with prefix test_)
@@ -10,17 +25,16 @@ add_executable(
 	${TEST_FILES}
 )
 
-# include "libs" directory for #incldue <catch2/catch2>
-target_include_directories(cpp_project_generator_tests PRIVATE libs)
-
+find_package(Catch2 CONFIG REQUIRED)
 find_package(Threads REQUIRED)
+
 target_link_libraries(
 	cpp_project_generator_tests
 PRIVATE
 	Threads::Threads
+	Catch2::Catch2
 	MBa::cpp_project_generator_lib
 )
-
 
 ## Make ctest run build.
 # idea taken from https://stackoverflow.com/questions/733475/cmake-ctest-make-test-doesnt-build-tests
@@ -28,11 +42,7 @@ PRIVATE
 
 ADD_TEST(NAME build_cpp_project_generator_tests COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target cpp_project_generator_tests)
 
+include(ParseAndAddCatchTests)
+
 set(PARSE_CATCH_TESTS_ADD_TO_CONFIGURE_DEPENDS ON)
-set(PARSE_CATCH_TESTS_ADD_TARGET_IN_TEST_NAME OFF)
-
-include(libs/catch2/ParseAndAddCatchTests.cmake)
-
 ParseAndAddCatchTests(cpp_project_generator_tests)
-
-

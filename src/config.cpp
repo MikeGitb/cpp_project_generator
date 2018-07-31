@@ -20,7 +20,7 @@ T get_or( const cxxopts::ParseResult& cmd_line_options, const std::string& key, 
 	return default_value;
 }
 
-Config parse_config( int argc, char* argv[] )
+Config parse_config( int argc, const char** argv )
 {
 	Config cfg;
 
@@ -71,7 +71,7 @@ Config parse_config( int argc, char* argv[] )
 	cfg.names.ns                = get_or( result, "namespace", cfg.names.ns );
 	cfg.names.cmake_ns          = get_or( result, "cmake_namespace", cfg.names.cmake_ns );
 	cfg.names.component_name    = get_or( result, "module", cfg.names.component_name );
-	
+
 	const std::string default_link_name
 		= cfg.names.cmake_ns + "::" + cfg.names.component_name + ( cfg.prj_type == ProjectType::exec ? "_lib" : "" );
 

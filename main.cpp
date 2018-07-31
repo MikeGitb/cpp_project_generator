@@ -25,7 +25,7 @@ void install_project( const fs::path&      template_dir,
 	switch( prj_type ) {
 		case ProjectType::exec:
 			install_recursive( template_dir / "exec", project_dir, names );
-			// create some empty 
+			// create some empty
 			fs::create_directories( project_dir / "src" );
 			fs::create_directories( project_dir / "libs" );
 			break;
@@ -62,10 +62,10 @@ const std::string post_build_message
 
 
 // example command : cpp_project_generator.exe -N flat_map -t lib -T mba_flat_map -n mba -c MBa -m flat_map -g
-int main( int argc, char* argv[] )
+int main( int argc, char** argv )
 {
 	try {
-		Config cfg = parse_config( argc, argv );
+		Config cfg = parse_config( argc, const_cast<const char**>( argv ) );
 
 		std::cout << "This will create a \"" << to_string( cfg.prj_type )
 				  << "\" project with the following configuration:\n"

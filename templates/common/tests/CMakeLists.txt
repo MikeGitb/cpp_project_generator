@@ -10,9 +10,6 @@ if (MSVC)
 	STRING(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 	add_compile_options(
 		/permissive-
-		/D_SCL_SECURE_NO_WARNINGS
-		/D_CRT_SECURE_NO_WARNINGS
-		/D_SILENCE_PARALLEL_ALGORITHMS_EXPERIMENTAL_WARNING
 	)
 else()
 	add_compile_options(-Wall -Wextra)
@@ -28,17 +25,16 @@ add_executable(
 	${TEST_FILES}
 )
 
-# include "libs" directory for #incldue <catch2/catch2>
-target_include_directories(${$TARGET_NAME$}$_tests PRIVATE libs)
-
+find_package(Catch2 CONFIG REQUIRED)
 find_package(Threads REQUIRED)
+
 target_link_libraries(
 	${$TARGET_NAME$}$_tests
 PRIVATE
 	Threads::Threads
+	Catch2::Catch2
 	${$CMAKE_TARGET_LINK_NAME$}$
 )
-
 
 ## Make ctest run build.
 # idea taken from https://stackoverflow.com/questions/733475/cmake-ctest-make-test-doesnt-build-tests
@@ -46,11 +42,7 @@ PRIVATE
 
 ADD_TEST(NAME build_${$TARGET_NAME$}$_tests COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target ${$TARGET_NAME$}$_tests)
 
+include(ParseAndAddCatchTests)
+
 set(PARSE_CATCH_TESTS_ADD_TO_CONFIGURE_DEPENDS ON)
-set(PARSE_CATCH_TESTS_ADD_TARGET_IN_TEST_NAME OFF)
-
-include(libs/catch2/ParseAndAddCatchTests.cmake)
-
 ParseAndAddCatchTests(${$TARGET_NAME$}$_tests)
-
-

@@ -32,7 +32,7 @@ inline Names create_default_names( const std::string& project_name )
 	return names;
 }
 
-Config parse_config( int argc, char* argv[] );
+Config parse_config( int argc, const char** argv );
 
 std::string to_string( const Config& cfg );
 

@@ -11,9 +11,6 @@ if (MSVC)
 	STRING(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 	add_compile_options(
 		/permissive-
-		/D_SCL_SECURE_NO_WARNINGS
-		/D_CRT_SECURE_NO_WARNINGS
-		/D_SILENCE_PARALLEL_ALGORITHMS_EXPERIMENTAL_WARNING
 	)
 else()
 	add_compile_options(-Wall -Wextra)

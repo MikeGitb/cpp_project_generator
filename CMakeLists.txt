@@ -11,26 +11,10 @@ if (MSVC)
 	STRING(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 	add_compile_options(
 		/permissive-
-		/D_SCL_SECURE_NO_WARNINGS
-		/D_CRT_SECURE_NO_WARNINGS
-		/D_SILENCE_PARALLEL_ALGORITHMS_EXPERIMENTAL_WARNING
 	)
 else()
 	add_compile_options(-Wall -Wextra)
 endif()
-
-########## Detect and Build Libraries ########################################
-file(GLOB LIBS "libs/*/CMakeLists.txt")
-set(library_list "")
-foreach( lib_cmake_file IN LISTS LIBS )
-	get_filename_component(lib_dir ${lib_cmake_file} DIRECTORY)
-	get_filename_component(lib_name ${lib_dir} NAME)
-
-	add_subdirectory(${lib_dir} EXCLUDE_FROM_ALL)
-	list(APPEND library_list ${lib_name})
-endforeach()
-
-message("Detected libraries: ${library_list}")
 
 ########## Generate Executable  ##############################################
 
@@ -39,27 +23,23 @@ message("Detected libraries: ${library_list}")
 # this Library is then linked to the main target -- makes testing simpler
 
 file(GLOB SOURCE_FILES "src/*.cpp")
-if(SOURCE_FILES)
-	add_library( cpp_project_generator_lib	STATIC	${SOURCE_FILES}	)
-else()
-	add_library( cpp_project_generator_lib INTERFACE )
-endif()
-
-target_include_directories	( cpp_project_generator_lib INTERFACE	src )
-target_link_libraries		( cpp_project_generator_lib PUBLIC		${library_list})
+add_library( cpp_project_generator_lib STATIC ${SOURCE_FILES} )
 
 if(MSVC)
-	target_sources(cpp_project_generator_lib PRIVATE src/win/arch.cpp)
+	target_sources( cpp_project_generator_lib PRIVATE src/win/arch.cpp )
 else()
-	target_sources(cpp_project_generator_lib PRIVATE src/linux/arch.cpp)
+	target_sources( cpp_project_generator_lib PRIVATE src/linux/arch.cpp )
 endif()
 
+find_package(cxxopts REQUIRED)
+target_link_libraries( cpp_project_generator_lib PUBLIC cxxopts::cxxopts )
 if(NOT WIN32)
 	# just a guess that we ar using libstdc++: gcc 8 requires the filesystem library to be linked explicitly
-	target_link_libraries(cpp_project_generator_lib PUBLIC stdc++fs)
+	target_link_libraries( cpp_project_generator_lib PUBLIC stdc++fs )
 endif()
 
-# create link target (e.g. for testing)
+########### create link target (e.g. for testing)
+target_include_directories( cpp_project_generator_lib INTERFACE src )
 add_library( MBa::cpp_project_generator_lib ALIAS cpp_project_generator_lib )
 
 ######### generate the actual Executable

@@ -1,15 +1,33 @@
 #include "config.h"
 
-#include "ProjectType.h"
+#include "arch.h"
 #include "helpers.h"
-#include "types.h"
+
 #include <cxxopts.hpp>
+
 #include <filesystem>
 #include <sstream>
 
 namespace mba {
 
 namespace fs = std::filesystem;
+
+std::filesystem::path get_template_directory()
+{
+	return get_exec_directory() / "cpp_project_templates";
+}
+
+Names create_default_names( const std::string& project_name )
+{
+	Names names;
+	names.project           = project_name;
+	names.target            = project_name;
+	names.ns                = my_tolower( project_name );
+	names.cmake_ns          = capitalize_first( project_name );
+	names.component_name    = project_name;
+	names.cmake_link_target = names.cmake_ns + "::" + names.component_name;
+	return names;
+}
 
 template<class T>
 T get_or( const cxxopts::ParseResult& cmd_line_options, const std::string& key, const T& default_value )
@@ -66,19 +84,18 @@ Config parse_config( int argc, const char** argv )
 		cfg.project_dir   = fs::current_path();
 	}
 
-	cfg.names                   = create_default_names( cfg.names.project );
-	cfg.names.target            = get_or( result, "target", cfg.names.target );
-	cfg.names.ns                = get_or( result, "namespace", cfg.names.ns );
-	cfg.names.cmake_ns          = get_or( result, "cmake_namespace", cfg.names.cmake_ns );
-	cfg.names.component_name    = get_or( result, "module", cfg.names.component_name );
+	cfg.names                = create_default_names( cfg.names.project );
+	cfg.names.target         = get_or( result, "target", cfg.names.target );
+	cfg.names.ns             = get_or( result, "namespace", cfg.names.ns );
+	cfg.names.cmake_ns       = get_or( result, "cmake_namespace", cfg.names.cmake_ns );
+	cfg.names.component_name = get_or( result, "module", cfg.names.component_name );
 
 	const std::string default_link_name
 		= cfg.names.cmake_ns + "::" + cfg.names.component_name + ( cfg.prj_type == ProjectType::exec ? "_lib" : "" );
 
 	cfg.names.cmake_link_target = get_or( result, "l", default_link_name );
 
-
-	for( int i = 0; i < int(cfg.names.cmake_link_target.size() - 1); ++i ) {
+	for( int i = 0; i < int( cfg.names.cmake_link_target.size() - 1 ); ++i ) {
 		if( cfg.names.cmake_link_target[i] == ':' && cfg.names.cmake_link_target[i + 1] == ':' ) {
 			cfg.names.component_name = cfg.names.cmake_link_target.substr( i + 2 );
 			break;
@@ -93,12 +110,13 @@ std::string to_string( const Config& cfg )
 	std::stringstream ss;
 
 	// clang-format off
-	ss << "\n Target directory:      " << cfg.project_dir
-	   << "\n Project name:          " << cfg.names.project
+	ss << "\n Project name:          " << cfg.names.project
+	   << "\n Project directory:     " << cfg.project_dir
 	   << "\n Template directory :   " << cfg.template_dir
 	   << "\n Target name:           " << cfg.names.target
 	   << "\n namespace:             " << cfg.names.ns
 	   << "\n cmake namespace:       " << cfg.names.cmake_ns
+	   << "\n cmake component name:  " << cfg.names.component_name
 	   << "\n cmake link target:     " << cfg.names.cmake_link_target;
 	// clang-format on
 

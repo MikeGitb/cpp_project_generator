@@ -1,13 +1,13 @@
-#include "src/helpers.h"
 #include "src/ProjectType.h"
-#include "src/git.h"
 #include "src/config.h"
+#include "src/git.h"
+#include "src/helpers.h"
 
+#include <cassert>
+#include <chrono>
 #include <iostream>
 #include <string>
 #include <thread>
-#include <chrono>
-#include <cassert>
 
 #include <filesystem>
 #include <stdexcept>
@@ -15,27 +15,28 @@
 namespace mba {
 namespace fs = std::filesystem;
 
-void install_project( const fs::path&      template_dir,
-					  const mba::fs::path& project_dir,
-					  mba::ProjectType     prj_type,
-					  const Names&         names )
+void install_project( const Config& cfg )
 {
+	const fs::path&        template_dir = cfg.template_dir;
+	const mba::fs::path&   project_dir  = cfg.project_dir;
+	const mba::ProjectType prj_type     = cfg.prj_type;
+
 	fs::create_directories( project_dir );
-	install_recursive( template_dir / "common", project_dir, names );
+	install_recursive( template_dir / "common", project_dir, cfg );
 	switch( prj_type ) {
 		case ProjectType::exec:
-			install_recursive( template_dir / "exec", project_dir, names );
+			install_recursive( template_dir / "exec", project_dir, cfg );
 			// create some empty
 			fs::create_directories( project_dir / "src" );
 			fs::create_directories( project_dir / "libs" );
 			break;
 		case ProjectType::lib:
-			install_recursive( template_dir / "lib-common", project_dir, names );
-			install_recursive( template_dir / "lib", project_dir, names );
+			install_recursive( template_dir / "lib-common", project_dir, cfg );
+			install_recursive( template_dir / "lib", project_dir, cfg );
 			break;
 		case ProjectType::lib_header_only:
-			install_recursive( template_dir / "lib-common", project_dir, names );
-			install_recursive( template_dir / "lib-header", project_dir, names );
+			install_recursive( template_dir / "lib-common", project_dir, cfg );
+			install_recursive( template_dir / "lib-header", project_dir, cfg );
 			break;
 		default: assert( false );
 	}
@@ -60,7 +61,6 @@ const std::string post_build_message
 	  "\n#"
 	  "\n################################################\n\n";
 
-
 // example command : cpp_project_generator.exe -N flat_map -t lib -T mba_flat_map -n mba -c MBa -m flat_map -g
 int main( int argc, char** argv )
 {
@@ -80,9 +80,9 @@ int main( int argc, char** argv )
 		}
 
 		try {
-			install_project( cfg.template_dir, cfg.project_dir, cfg.prj_type, cfg.names );
+			install_project( cfg );
 
-			std::cout << post_build_message  << std::endl;
+			std::cout << post_build_message << std::endl;
 
 			if( cfg.create_git ) {
 				mba::git_init_dir( cfg.project_dir );

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "arch.h"
-#include "types.h"
+#include "config.h"
 
 #include <filesystem>
 #include <regex>
@@ -15,10 +15,10 @@ std::string capitalize_first( const std::string& s );
 
 void install_file( const std::filesystem::path& template_path,
 				   const std::filesystem::path& dest_path,
-				   const Names&                 names );
+				   const Config&                cfg );
 
 void install_recursive( const std::filesystem::path& template_dir,
 						const std::filesystem::path& dest,
-						const Names&                 names );
+						const Config&                cfg );
 
 } // namespace mba

@@ -47,19 +47,20 @@ void install_project( const Config& cfg )
 using namespace mba;
 
 const std::string post_build_message
-	= "\n################################################"
-	  "\n### Project creation completed successfully! ###"
-	  "\n################################################"
+	= "\n###################################################################"
+	  "\n###      Project creation completed successfully!               ###"
+	  "\n###################################################################"
 	  "\n#"
 	  "\n# To build your project and run test cases "
 	  "\n# you can perform the following steps:"
 	  "\n#"
-	  "\n# - Go to the \"build\" subdirectory (create it if neccessary)"
+	  "\n# - Create and switch to the directory you want to build in"
 	  "\n# - cmake .. "
 	  "\n# - cmake --build ."
-	  "\n# - ctest .		# or for MSVC: ctest . -C Debug"
+	  "\n# - ctest . # or for MSVC: ctest . -C Debug"
 	  "\n#"
-	  "\n################################################\n\n";
+	  "\n###################################################################"
+	  "\n\n";
 
 // example command : cpp_project_generator.exe -N flat_map -t lib -T mba_flat_map -n mba -c MBa -m flat_map -g
 int main( int argc, char** argv )

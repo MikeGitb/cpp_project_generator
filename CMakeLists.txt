@@ -12,6 +12,7 @@ if (MSVC)
 	add_compile_options(
 		/permissive-
 	)
+	add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 else()
 	add_compile_options(-Wall -Wextra)
 endif()
@@ -37,7 +38,7 @@ add_custom_command(TARGET cpp_project_generator POST_BUILD
      "$<TARGET_FILE_DIR:cpp_project_generator>/cpp_project_templates"
   COMMENT "Copying to output directory")
 
-INSTALL( DIRECTORY "$<TARGET_FILE_DIR:cpp_project_generator>/cpp_project_templates" DESTINATION "." )
+INSTALL( DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/templates/" DESTINATION "./cpp_project_templates" )
 INSTALL( TARGETS cpp_project_generator RUNTIME DESTINATION ".")
 
 ########## Testing ###########################################################

@@ -66,7 +66,7 @@ const std::string post_build_message
 int main( int argc, char** argv )
 {
 	try {
-		Config cfg = parse_config( argc, const_cast<const char**>( argv ) );
+		Config cfg = parse_config( argc, argv );
 
 		std::cout << "This will create a \"" << to_string( cfg.prj_type )
 				  << "\" project with the following configuration:\n"

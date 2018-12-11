@@ -38,7 +38,7 @@ T get_or( const cxxopts::ParseResult& cmd_line_options, const std::string& key, 
 	return default_value;
 }
 
-Config parse_config( int argc, const char** argv )
+Config parse_config( int argc, char** argv )
 {
 	Config cfg;
 

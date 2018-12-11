@@ -27,6 +27,6 @@ std::string to_string( const Config& cfg );
 
 auto get_template_directory() -> std::filesystem::path;
 auto create_default_names( const std::string& project_name ) -> Names;
-auto parse_config( int argc, const char** argv ) -> Config;
+auto parse_config( int argc, char** argv ) -> Config;
 
 } // namespace mba

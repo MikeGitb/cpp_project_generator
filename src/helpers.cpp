@@ -8,9 +8,9 @@
 #include <iostream>
 #include <iterator>
 #include <regex>
+#include <set>
 #include <stdexcept>
 #include <string>
-#include <set>
 
 namespace mba {
 
@@ -80,7 +80,7 @@ void merge_snippet( const std::filesystem::path& file, const std::regex& reg, st
 	fs::path        snippet_file   = file.parent_path() / base_sub_match.str();
 	replace_inplace( text, reg, get_file_content( snippet_file ) );
 	set_file_content( file, text );
-	files_to_delete.insert(snippet_file);
+	files_to_delete.insert( snippet_file );
 }
 
 void merge_snippets_recursive( const std::filesystem::path& dir )
@@ -88,11 +88,11 @@ void merge_snippets_recursive( const std::filesystem::path& dir )
 	std::set<fs::path> files_to_delete_later;
 	for( auto d : fs::recursive_directory_iterator( dir ) ) {
 		if( !d.is_directory() ) {
-			merge_snippet( d, regex_cmake_library_definition_snippet, files_to_delete_later);
+			merge_snippet( d, regex_cmake_library_definition_snippet, files_to_delete_later );
 		}
 	}
-	for (const auto& f : files_to_delete_later) {
-		fs::remove(f);
+	for( const auto& f : files_to_delete_later ) {
+		fs::remove( f );
 	}
 }
 
@@ -116,7 +116,7 @@ void install_file( const fs::path& template_path, const fs::path& dest_path, con
 			replace_inplace( line, regex_ns, names.ns );
 			replace_inplace( line, regex_link_target, names.cmake_link_target );
 			replace_inplace( line, regex_cmake_ns, names.cmake_ns );
-			if( cfg.prj_type ==  ProjectType::lib_header_only )
+			if( cfg.prj_type == ProjectType::lib_header_only )
 				replace_inplace( line, regex_cmake_public_visibility, "INTERFACE" );
 			else
 				replace_inplace( line, regex_cmake_public_visibility, "PUBLIC" );

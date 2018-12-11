@@ -14,7 +14,7 @@ std::filesystem::path GetExeFileName()
 	std::string buffer( 300, ' ' );
 
 	auto cnt = readlink( "/proc/self/exe", buffer.data(), buffer.size() - 1 );
-	while( cnt == ((std::ptrdiff_t)buffer.size()) - 1 ) {
+	while( cnt == ( (std::ptrdiff_t)buffer.size() ) - 1 ) {
 		buffer.resize( buffer.size() * 2 );
 		cnt = readlink( "/proc/self/exe", buffer.data(), buffer.size() - 1 );
 	}
@@ -23,7 +23,6 @@ std::filesystem::path GetExeFileName()
 	} else {
 		return buffer;
 	}
-
 }
 
 std::filesystem::path get_exec_directory()

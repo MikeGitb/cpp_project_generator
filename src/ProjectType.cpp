@@ -38,7 +38,8 @@ std::optional<ProjectType> parse_ProjectType( std::string_view str )
 		return ProjectType::exec;
 	} else if( ( str == to_string( ProjectType::lib ) ) || ( str == to_string_short( ProjectType::lib ) ) ) {
 		return ProjectType::lib;
-	} else if( ( str == to_string( ProjectType::lib_header_only ) ) || ( str == to_string_short( ProjectType::lib_header_only ) ) ) {
+	} else if( ( str == to_string( ProjectType::lib_header_only ) )
+			   || ( str == to_string_short( ProjectType::lib_header_only ) ) ) {
 		return ProjectType::lib_header_only;
 	}
 	return std::nullopt;

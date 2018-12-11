@@ -9,11 +9,11 @@ std::filesystem::path GetExeFileName()
 {
 	std::wstring buffer( MAX_PATH, ' ' );
 
-	auto cnt = GetModuleFileNameW( NULL, buffer.data(), (int) buffer.size() );
+	auto cnt = GetModuleFileNameW( NULL, buffer.data(), (int)buffer.size() );
 
 	while( ( cnt != 0 ) && ( GetLastError() == ERROR_INSUFFICIENT_BUFFER ) ) {
 		buffer.resize( buffer.size() * 2 );
-		cnt = GetModuleFileNameW( NULL, buffer.data(), (int) buffer.size() );
+		cnt = GetModuleFileNameW( NULL, buffer.data(), (int)buffer.size() );
 	}
 
 	if( cnt == 0 ) {
@@ -23,7 +23,8 @@ std::filesystem::path GetExeFileName()
 	return std::filesystem::canonical( std::filesystem::path( buffer ) );
 }
 
-std::filesystem::path get_exec_directory() {
+std::filesystem::path get_exec_directory()
+{
 	return GetExeFileName().parent_path();
 }
 

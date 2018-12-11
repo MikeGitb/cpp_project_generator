@@ -23,6 +23,7 @@ struct Config {
 	std::filesystem::path project_dir;
 	bool                  create_git;
 };
+
 std::string to_string( const Config& cfg );
 
 auto get_template_directory() -> std::filesystem::path;

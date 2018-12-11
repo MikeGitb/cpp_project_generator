@@ -50,6 +50,7 @@ Config parse_config( int argc, char** argv )
 		to_string_short(ProjectType::exec) + " | "	+
 		to_string_short(ProjectType::lib) + " | "	+
 		to_string_short(ProjectType::lib_header_only);
+
 	options.add_options()
 		("h,help",          "print documentation")
 		("N,name",          "Name of the project",                                 cxxopts::value<std::string>() )
@@ -102,7 +103,6 @@ Config parse_config( int argc, char** argv )
 			break;
 		}
 	}
-
 	return cfg;
 }
 

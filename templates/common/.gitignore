@@ -1,4 +1,4 @@
 .cproject
 .project
 .vs
-/build
+__*__

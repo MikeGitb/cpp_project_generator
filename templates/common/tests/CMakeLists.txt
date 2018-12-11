@@ -16,12 +16,16 @@ else()
 endif()
 
 ########## Generate test executable ##########################################
-
-# search for test source files (have to start with prefix test_)
-file(GLOB_RECURSE TEST_FILES test_*.cpp)
 add_executable(
 	${$TARGET_NAME$}$_tests
 	main.cpp
+)
+
+# search for test source files (have to start with prefix test_)
+file(GLOB_RECURSE TEST_FILES test_*.cpp)
+target_sources(
+	${$TARGET_NAME$}$_tests
+PUBLIC
 	${TEST_FILES}
 )
 

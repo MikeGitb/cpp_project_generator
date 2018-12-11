@@ -32,7 +32,7 @@ void install_project( const Config& cfg )
 			break;
 		case ProjectType::lib:
 			install_recursive( template_dir / "lib-common", project_dir, cfg );
-			install_recursive( template_dir / "lib", project_dir, cfg );
+			install_recursive( template_dir / "lib-compiled", project_dir, cfg );
 			break;
 		case ProjectType::lib_header_only:
 			install_recursive( template_dir / "lib-common", project_dir, cfg );

@@ -1,16 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-########## Generate Proxy Library
-# We put all source files (except main) into a separate library
-# this Library is then linked to the main target -- makes testing simpler
+add_subdirectory( ${$PROJECT_NAME$}$ )
 
-file(GLOB_RECURSE SOURCE_FILES "*.cpp")
-
-if(SOURCE_FILES)
-	add_library				( ${$TARGET_NAME$}$_lib	STATIC ${SOURCE_FILES}	)
-endif()
-
-target_include_directories	( ${$TARGET_NAME$}$_lib INTERFACE . )
-
-# create link target (e.g. for testing)
-add_library( ${$CMAKE_TARGET_LINK_NAME$}$ ALIAS ${$TARGET_NAME$}$_lib )
+add_executable(	${$TARGET_NAME$}$ main.cpp )
+target_link_libraries( ${$TARGET_NAME$}$ ${$CMAKE_TARGET_LINK_NAME$}$)

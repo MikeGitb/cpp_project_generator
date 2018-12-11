@@ -2,6 +2,6 @@
 
 namespace ${$NAMESPACE$}$ {
 
-	const char* hello() { return "Hello"; }
+	const char* hello() { return "Hello World"; }
 
 } // namespace ${$NAMESPACE$}$

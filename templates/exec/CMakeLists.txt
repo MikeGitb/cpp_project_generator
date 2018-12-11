@@ -25,11 +25,6 @@ endif()
 
 add_subdirectory( src )
 
-######### generate the actual Executable
-
-add_executable(	${$TARGET_NAME$}$ main.cpp )
-target_link_libraries( ${$TARGET_NAME$}$ ${$CMAKE_TARGET_LINK_NAME$}$)
-
 ########## Testing ###########################################################
 option(${$PROJECT_NAME$}$_INCLUDE_TESTS "Generate targets in test directory" ON)
 

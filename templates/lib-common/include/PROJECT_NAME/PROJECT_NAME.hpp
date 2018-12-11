@@ -2,7 +2,7 @@
 
 namespace ${$NAMESPACE$}$ {
 
-inline const char* get_hello()
+inline const char* hello()
 {
 	return "${$TARGET_NAME$}$ says hello!";
 }

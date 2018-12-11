@@ -16,4 +16,7 @@ const std::regex regex_project_filename( R"--(PROJECT_NAME)--", std::regex::opti
 const std::regex regex_target_filename( R"--(TARGET_NAME)--", std::regex::optimize );
 const std::regex regex_component_filename( R"--(COMPONENT_NAME)--", std::regex::optimize );
 
+const std::regex regex_cmake_library_definition_snippet(
+R"--(\$\{\$SNIPP_\$(.*)\$\$\}\$)--",
+std::regex::optimize );
 }

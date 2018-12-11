@@ -21,4 +21,6 @@ void install_recursive( const std::filesystem::path& template_dir,
 						const std::filesystem::path& dest,
 						const Config&                cfg );
 
+void merge_snippets_recursive( const std::filesystem::path& dir );
+
 } // namespace mba

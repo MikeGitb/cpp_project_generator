@@ -40,6 +40,7 @@ void install_project( const Config& cfg )
 			break;
 		default: assert( false );
 	}
+	merge_snippets_recursive( project_dir );
 }
 
 } // namespace mba

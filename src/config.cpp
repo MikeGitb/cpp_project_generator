@@ -62,6 +62,7 @@ Config parse_config( int argc, const char** argv )
 		("g,git",           "creates a git repository (requires git to be installed)" );
 	// clang-format on
 
+	options.parse_positional( {"name"} );
 	auto result = options.parse( argc, argv );
 
 	if( result.count( "help" ) > 0 ) {

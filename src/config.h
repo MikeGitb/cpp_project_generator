@@ -2,8 +2,8 @@
 
 #include "ProjectType.h"
 
-#include <string>
 #include <filesystem>
+#include <string>
 
 namespace mba {
 
@@ -28,6 +28,5 @@ std::string to_string( const Config& cfg );
 auto get_template_directory() -> std::filesystem::path;
 auto create_default_names( const std::string& project_name ) -> Names;
 auto parse_config( int argc, const char** argv ) -> Config;
-
 
 } // namespace mba
